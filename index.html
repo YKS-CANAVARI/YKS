@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YKS Geri Sayım</title>
+    <style>
+        /* Minimalist Tasarım Ayarları */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f7f7f8; /* Göz yormayan açık gri arka plan */
+            color: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 2rem;
+            margin: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Çok hafif bir gölge */
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .timer {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2980b9; /* Hafif mavi bir vurgu */
+            margin-top: 10px;
+            font-variant-numeric: tabular-nums; /* Sayıların zıplamasını engeller */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>YKS 2026</h1>
+        <div class="timer" id="timer2026">Hesaplanıyor...</div>
+    </div>
+
+    <div class="container">
+        <h1>YKS 2027</h1>
+        <div class="timer" id="timer2027">Hesaplanıyor...</div>
+    </div>
+
+    <script>
+        // Hedef tarihler: 21 Haziran (Saat 10:15)
+        const date2026 = new Date("June 21, 2026 10:15:00").getTime();
+        const date2027 = new Date("June 21, 2027 10:15:00").getTime();
+
+        function updateTimer(targetDate, elementId) {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // Zaman dolduysa yazılacak mesaj
+            if (distance < 0) {
+                document.getElementById(elementId).innerHTML = "Sınav Zamanı!";
+                return;
+            }
+
+            // Gün, Saat, Dakika, Saniye hesaplamaları
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // 10'dan küçük sayıların başına 0 ekleme (örneğin 09 saniye)
+            const format = (num) => num < 10 ? "0" + num : num;
+
+            // Ekrana yazdırma formatı
+            document.getElementById(elementId).innerHTML = 
+                `${days}g ${format(hours)}s ${format(minutes)}d ${format(seconds)}sn`;
+        }
+
+        // Sayfa açılır açılmaz anında görünsün diye ilk çalıştırma
+        updateTimer(date2026, "timer2026");
+        updateTimer(date2027, "timer2027");
+
+        // Sayacı her saniye başı güncelle
+        setInterval(() => {
+            updateTimer(date2026, "timer2026");
+            updateTimer(date2027, "timer2027");
+        }, 1000);
+    </script>
+</body>
+</html>
