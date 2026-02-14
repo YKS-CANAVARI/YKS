@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YKS Geri Sayım</title>
+    <title>YKS Geri Sayım - Hedef İTÜ</title>
     <style>
-        /* Minimalist Tasarım Ayarları */
+        /* Tasarım Ayarları */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f7f7f8; /* Göz yormayan açık gri arka plan */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Lacivertten beyaza fade efekti */
+            background: linear-gradient(to bottom, #003057 0%, #ffffff 100%);
+            background-attachment: fixed; /* Arkaplanın kaymasını engeller */
             color: #2c3e50;
             display: flex;
             flex-direction: column;
@@ -17,33 +19,54 @@
             min-height: 100vh;
             margin: 0;
         }
+
+        .logo {
+            width: 120px; /* Logo boyutu */
+            height: auto;
+            margin-bottom: 30px;
+            /* Beyaz logoyu lacivert üstünde parlatmak için hafif gölge */
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        }
+
         .container {
             text-align: center;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9); /* Yarı şeffaf beyaz kutu */
             padding: 2rem;
             margin: 1rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Çok hafif bir gölge */
-            width: 90%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 85%;
             max-width: 400px;
+            backdrop-filter: blur(5px); /* Arkaplanı hafif bulanıklaştırır, şık durur */
         }
+
         h1 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-top: 0;
             color: #7f8c8d;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
+
         .timer {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #2980b9; /* Hafif mavi bir vurgu */
+            font-size: 2rem;
+            font-weight: 800;
+            color: #003057; /* İTÜ Laciverti */
             margin-top: 10px;
-            font-variant-numeric: tabular-nums; /* Sayıların zıplamasını engeller */
+            font-variant-numeric: tabular-nums;
+        }
+
+        .motto {
+            margin-top: 20px;
+            font-weight: 600;
+            color: #003057;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
+
+    <img src="https://www.itu.edu.tr/lib/img/itu-logo-big.png" alt="İTÜ Logo" class="logo">
 
     <div class="container">
         <h1>YKS 2026</h1>
@@ -55,6 +78,8 @@
         <div class="timer" id="timer2027">Hesaplanıyor...</div>
     </div>
 
+    <p class="motto">#HedefİTÜ</p>
+
     <script>
         // Hedef tarihler: 21 Haziran (Saat 10:15)
         const date2026 = new Date("June 21, 2026 10:15:00").getTime();
@@ -64,31 +89,25 @@
             const now = new Date().getTime();
             const distance = targetDate - now;
 
-            // Zaman dolduysa yazılacak mesaj
             if (distance < 0) {
-                document.getElementById(elementId).innerHTML = "Sınav Zamanı!";
+                document.getElementById(elementId).innerHTML = "Sınav Başladı!";
                 return;
             }
 
-            // Gün, Saat, Dakika, Saniye hesaplamaları
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // 10'dan küçük sayıların başına 0 ekleme (örneğin 09 saniye)
             const format = (num) => num < 10 ? "0" + num : num;
 
-            // Ekrana yazdırma formatı
             document.getElementById(elementId).innerHTML = 
                 `${days}g ${format(hours)}s ${format(minutes)}d ${format(seconds)}sn`;
         }
 
-        // Sayfa açılır açılmaz anında görünsün diye ilk çalıştırma
         updateTimer(date2026, "timer2026");
         updateTimer(date2027, "timer2027");
 
-        // Sayacı her saniye başı güncelle
         setInterval(() => {
             updateTimer(date2026, "timer2026");
             updateTimer(date2027, "timer2027");
