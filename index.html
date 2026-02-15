@@ -3,117 +3,2388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YKS Geri Sayım - Hedef İTÜ</title>
+    <title>YKS Geri Sayım 2026 & 2027</title>
     <style>
-        /* Tasarım Ayarları */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Lacivertten beyaza fade efekti */
-            background: linear-gradient(to bottom, #003057 0%, #ffffff 100%);
-            background-attachment: fixed; /* Arkaplanın kaymasını engeller */
-            color: #2c3e50;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .logo {
-            width: 300px; /* Logo boyutu */
-            height: auto;
-            margin-bottom: 30px;
-            /* Beyaz logoyu lacivert üstünde parlatmak için hafif gölge */
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+            padding: 20px;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+            color: #e8eaf0;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark .theme-toggle {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e8eaf0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark .theme-toggle:hover {
+            background: rgba(26, 31, 58, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .menu-toggle {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        body.dark .menu-toggle {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e8eaf0;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark .menu-toggle:hover {
+            background: rgba(26, 31, 58, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 80px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 10px 0;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        body.dark .dropdown-menu {
+            background: rgba(26, 31, 58, 0.6);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: #2c3e50;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.dark .menu-item {
+            color: #e8eaf0;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        body.dark .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background: rgba(99, 110, 250, 0.2);
+            border-left: 4px solid #636efa;
+        }
+
+        body.dark .menu-item.active {
+            background: rgba(99, 110, 250, 0.3);
+            border-left: 4px solid #818cf8;
         }
 
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.9); /* Yarı şeffaf beyaz kutu */
-            padding: 2rem;
-            margin: 1rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 85%;
-            max-width: 400px;
-            backdrop-filter: blur(5px); /* Arkaplanı hafif bulanıklaştırır, şık durur */
+            max-width: 1400px;
+            width: 100%;
         }
 
         h1 {
-            font-size: 1rem;
-            margin-top: 0;
-            color: #7f8c8d;
-            text-transform: uppercase;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
             letter-spacing: 2px;
         }
 
-        .timer {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #003057; /* İTÜ Laciverti */
-            margin-top: 10px;
-            font-variant-numeric: tabular-nums;
+        .countdowns {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
         }
 
-        .motto {
-            margin-top: 20px;
+        .countdown-section {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-width: 500px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .countdown-section {
+            background: rgba(26, 31, 58, 0.4);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .countdown-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark .countdown-section:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .year-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .year-2026 {
+            color: #ffd700;
+        }
+
+        .year-2027 {
+            color: #00d4ff;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 100px;
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        body.dark .time-unit {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .time-unit:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.05);
+        }
+
+        body.dark .time-unit:hover {
+            background: rgba(26, 31, 58, 0.8);
+        }
+
+        .time-value {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .time-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
             font-weight: 600;
-            color: #003057;
+        }
+
+        .exam-date {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            opacity: 0.8;
             font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+
+            .countdown-section {
+                min-width: 100%;
+                padding: 30px 20px;
+            }
+
+            .year-title {
+                font-size: 1.5rem;
+            }
+
+            .time-unit {
+                min-width: 70px;
+                padding: 15px 10px;
+            }
+
+            .time-value {
+                font-size: 2rem;
+            }
+
+            .time-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        .motivation {
+            margin-top: 50px;
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-style: italic;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-text {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .quote-author {
+            font-size: 1rem;
+            opacity: 0.7;
+            font-weight: 600;
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(99, 110, 250, 0.3);
+            border: 2px solid rgba(99, 110, 250, 0.5);
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        body.dark .fullscreen-btn {
+            color: #e8eaf0;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(99, 110, 250, 0.5);
+            transform: scale(1.05);
+        }
+
+        .fullscreen-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: inherit;
+        }
+
+        .fullscreen-mode .timer-display {
+            font-size: 8rem !important;
+            margin: 50px 0 !important;
+        }
+
+        .fullscreen-mode .timer-controls {
+            margin-top: 50px;
+        }
+
+        .fullscreen-mode .control-btn {
+            font-size: 1.3rem;
+            padding: 20px 40px;
+        }
+
+        .goal-input-section {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        body.dark .goal-input-section {
+            background: rgba(26, 31, 58, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .goal-input-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #636efa;
+        }
+
+        body.dark .goal-input-section h3 {
+            color: #818cf8;
+        }
+
+        .goal-input-section input,
+        .goal-input-section textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            color: #2c3e50;
+            font-size: 1.1rem;
+            font-family: inherit;
+            margin-bottom: 15px;
+        }
+
+        body.dark .goal-input-section input,
+        body.dark .goal-input-section textarea {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e8eaf0;
+        }
+
+        .goal-input-section textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .goal-input-section input:focus,
+        .goal-input-section textarea:focus {
+            outline: none;
+            border-color: #636efa;
+        }
+
+        .goal-display {
+            background: rgba(99, 110, 250, 0.2);
+            border: 2px solid rgba(99, 110, 250, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .goal-display h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #636efa;
+        }
+
+        body.dark .goal-display h4 {
+            color: #818cf8;
+        }
+
+        .goal-display p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .best-day-card {
+            background: rgba(46, 213, 115, 0.2);
+            border: 2px solid rgba(46, 213, 115, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        body.dark .best-day-card {
+            background: rgba(46, 213, 115, 0.15);
+        }
+
+        .best-day-card .stat-value {
+            color: #2ed573;
+        }
+
+        @media (max-width: 768px) {
+            .fullscreen-mode .timer-display {
+                font-size: 4rem !important;
+            }
+
+            .fullscreen-mode .control-btn {
+                font-size: 1rem;
+                padding: 15px 30px;
+            }
+        }
+
+        .tools-section {
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        body.dark .tools-section {
+            background: rgba(26, 31, 58, 0.4);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .tools-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tools-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #636efa;
+        }
+
+        body.dark .tools-title {
+            color: #818cf8;
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 30px 0;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 3px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        body.dark .control-btn {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e8eaf0;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark .control-btn:hover {
+            background: rgba(26, 31, 58, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .control-btn.start {
+            background: rgba(46, 213, 115, 0.3);
+            border-color: rgba(46, 213, 115, 0.5);
+        }
+
+        .control-btn.start:hover {
+            background: rgba(46, 213, 115, 0.5);
+        }
+
+        .control-btn.pause {
+            background: rgba(255, 159, 67, 0.3);
+            border-color: rgba(255, 159, 67, 0.5);
+        }
+
+        .control-btn.pause:hover {
+            background: rgba(255, 159, 67, 0.5);
+        }
+
+        .control-btn.reset {
+            background: rgba(255, 71, 87, 0.3);
+            border-color: rgba(255, 71, 87, 0.5);
+        }
+
+        .control-btn.reset:hover {
+            background: rgba(255, 71, 87, 0.5);
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .preset-btn {
+            background: rgba(99, 110, 250, 0.3);
+            border: 2px solid rgba(99, 110, 250, 0.5);
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        body.dark .preset-btn {
+            color: #e8eaf0;
+            background: rgba(99, 110, 250, 0.2);
+        }
+
+        .preset-btn:hover {
+            background: rgba(99, 110, 250, 0.5);
+            transform: scale(1.05);
+        }
+
+        .custom-time {
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark .custom-time {
+            background: rgba(26, 31, 58, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .custom-time h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #636efa;
+        }
+
+        body.dark .custom-time h3 {
+            color: #818cf8;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .time-input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .time-input-group label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .time-input-group input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            color: #2c3e50;
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        body.dark .time-input-group input {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e8eaf0;
+        }
+
+        .time-input-group input:focus {
+            outline: none;
+            border-color: #636efa;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        body.dark .time-input-group input:focus {
+            border-color: #818cf8;
+            background: rgba(26, 31, 58, 0.8);
+        }
+
+        .time-input-group input::placeholder {
+            color: rgba(44, 62, 80, 0.5);
+        }
+
+        body.dark .time-input-group input::placeholder {
+            color: rgba(232, 234, 240, 0.5);
+        }
+
+        .alarm-sound {
+            margin-top: 20px;
+            font-size: 3rem;
+            display: none;
+        }
+
+        .alarm-sound.active {
+            display: block;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .tools-section {
+                padding: 30px 20px;
+            }
+
+            .timer-display {
+                font-size: 3rem;
+            }
+
+            .tools-title {
+                font-size: 1.5rem;
+            }
+
+            .time-input-group input {
+                width: 70px;
+                font-size: 1rem;
+            }
+        }
+
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .month-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .month-nav button {
+            background: rgba(99, 110, 250, 0.3);
+            border: 2px solid rgba(99, 110, 250, 0.5);
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .month-nav button {
+            color: #e8eaf0;
+        }
+
+        .month-nav button:hover {
+            background: rgba(99, 110, 250, 0.5);
+            transform: scale(1.05);
+        }
+
+        .month-display {
+            font-size: 1.3rem;
+            font-weight: 700;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .stats-summary {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            min-width: 150px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .stat-card {
+            background: rgba(26, 31, 58, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #636efa;
+            margin-bottom: 5px;
+        }
+
+        body.dark .stat-value {
+            color: #818cf8;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 700;
+            padding: 10px 5px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body.dark .calendar-day {
+            background: rgba(26, 31, 58, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+
+        .calendar-day.today {
+            border-color: #636efa;
+            border-width: 3px;
+        }
+
+        body.dark .calendar-day.today {
+            border-color: #818cf8;
+        }
+
+        .calendar-day:not(.empty):hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .day-number {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .day-hours {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(99, 110, 250, 0.3);
+        }
+
+        .calendar-day.has-data {
+            background: rgba(46, 213, 115, 0.2);
+        }
+
+        body.dark .calendar-day.has-data {
+            background: rgba(46, 213, 115, 0.15);
+        }
+
+        .calendar-day.high-hours {
+            background: rgba(46, 213, 115, 0.4);
+        }
+
+        body.dark .calendar-day.high-hours {
+            background: rgba(46, 213, 115, 0.3);
+        }
+
+        .reset-stats-btn {
+            background: rgba(255, 71, 87, 0.3);
+            border: 2px solid rgba(255, 71, 87, 0.5);
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .reset-stats-btn {
+            color: #e8eaf0;
+        }
+
+        .reset-stats-btn:hover {
+            background: rgba(255, 71, 87, 0.5);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .calendar {
+                gap: 5px;
+            }
+
+            .calendar-day {
+                padding: 5px;
+            }
+
+            .day-number {
+                font-size: 0.8rem;
+            }
+
+            .day-hours {
+                font-size: 0.65rem;
+            }
+
+            .stat-card {
+                min-width: 120px;
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        .net-entry-form {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        body.dark .net-entry-form {
+            background: rgba(26, 31, 58, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .net-entry-form h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #636efa;
+        }
+
+        body.dark .net-entry-form h3 {
+            color: #818cf8;
+        }
+
+        .subject-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .subject-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .subject-input-group label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .subject-input-group input {
+            padding: 12px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            color: #2c3e50;
+            font-size: 1.1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        body.dark .subject-input-group input {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e8eaf0;
+        }
+
+        .subject-input-group input:focus {
+            outline: none;
+            border-color: #636efa;
+        }
+
+        .net-list {
+            margin-top: 30px;
+        }
+
+        .net-item {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .net-item {
+            background: rgba(26, 31, 58, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .net-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .net-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .net-item-date {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #636efa;
+        }
+
+        body.dark .net-item-date {
+            color: #818cf8;
+        }
+
+        .net-item-total {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #2ed573;
+        }
+
+        .net-item-subjects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .net-subject {
+            text-align: center;
+            padding: 8px;
+            background: rgba(99, 110, 250, 0.2);
+            border-radius: 8px;
+        }
+
+        .net-subject-name {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 3px;
+        }
+
+        .net-subject-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .delete-net-btn {
+            background: rgba(255, 71, 87, 0.3);
+            border: 2px solid rgba(255, 71, 87, 0.5);
+            border-radius: 8px;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .delete-net-btn {
+            color: #e8eaf0;
+        }
+
+        .delete-net-btn:hover {
+            background: rgba(255, 71, 87, 0.5);
+        }
+
+        .net-date-input,
+        .net-name-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        body.dark .net-date-input,
+        body.dark .net-name-input {
+            background: rgba(26, 31, 58, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #e8eaf0;
+        }
+
+        .net-date-input:focus,
+        .net-name-input:focus {
+            outline: none;
+            border-color: #636efa;
+        }
+
+        .exam-type-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(99, 110, 250, 0.3);
+        }
+
+        .exam-type-tab {
+            padding: 12px 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        body.dark .exam-type-tab {
+            color: #e8eaf0;
+        }
+
+        .exam-type-tab.active {
+            opacity: 1;
+            border-bottom-color: #636efa;
+        }
+
+        body.dark .exam-type-tab.active {
+            border-bottom-color: #818cf8;
+        }
+
+        .exam-type-tab:hover {
+            opacity: 0.8;
+        }
+
+        .exam-section {
+            display: none;
+        }
+
+        .exam-section.active {
+            display: block;
         }
     </style>
 </head>
-<body>
+<body class="dark">
+    <button class="menu-toggle" onclick="toggleMenu()">
+        <span>☰</span>
+        <span>Menü</span>
+    </button>
 
-    <img src="https://www.itu.edu.tr/lib/img/itu-logo-big.png" alt="İTÜ Logo" class="logo">
-
-    <div class="container">
-        <h1>YKS 2026</h1>
-        <div class="timer" id="timer2026">Hesaplanıyor...</div>
+    <div class="dropdown-menu" id="dropdownMenu">
+        <div class="menu-item active" onclick="showSection('countdown')">
+            🏠 Ana Sayfa
+        </div>
+        <div class="menu-item" onclick="showSection('timer')">
+            ⏱️ Sayaç
+        </div>
+        <div class="menu-item" onclick="showSection('stopwatch')">
+            ⏲️ Kronometre
+        </div>
+        <div class="menu-item" onclick="showSection('net')">
+            📝 Net Takibi
+        </div>
+        <div class="menu-item" onclick="showSection('statistics')">
+            📊 İstatistikler
+        </div>
+        <div class="menu-item" onclick="showSection('goals')">
+            🎯 Hedefler
+        </div>
     </div>
 
-    <div class="container">
-        <h1>YKS 2027</h1>
-        <div class="timer" id="timer2027">Hesaplanıyor...</div>
-    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">☀️</span>
+        <span id="theme-text">Aydınlık Mod</span>
+    </button>
 
-    <p class="motto">#HedefİTÜ</p>
+    <div class="container">
+        <div id="countdownSection">
+            <h1>🎓 YKS GERİ SAYIM 🎓</h1>
+            
+            <div class="countdowns">
+                <div class="countdown-section">
+                    <div class="year-title year-2026">YKS 2026</div>
+                    <div class="countdown" id="countdown-2026">
+                        <div class="time-unit">
+                            <span class="time-value" id="days-2026">000</span>
+                            <span class="time-label">Gün</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value" id="hours-2026">00</span>
+                            <span class="time-label">Saat</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value" id="minutes-2026">00</span>
+                            <span class="time-label">Dakika</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value" id="seconds-2026">00</span>
+                            <span class="time-label">Saniye</span>
+                        </div>
+                    </div>
+                    <div class="exam-date">📅 26 Haziran 2026, Cuma</div>
+                </div>
+
+                <div class="countdown-section">
+                    <div class="year-title year-2027">YKS 2027</div>
+                    <div class="countdown" id="countdown-2027">
+                        <div class="time-unit">
+                            <span class="time-value" id="days-2027">000</span>
+                            <span class="time-label">Gün</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value" id="hours-2027">00</span>
+                            <span class="time-label">Saat</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value" id="minutes-2027">00</span>
+                            <span class="time-label">Dakika</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value" id="seconds-2027">00</span>
+                            <span class="time-label">Saniye</span>
+                        </div>
+                    </div>
+                    <div class="exam-date">📅 26 Haziran 2027, Cumartesi</div>
+                </div>
+            </div>
+
+            <div class="motivation">
+                <div class="quote-text" id="motivationQuote">✨ Her gün bir fırsattır! Başarıya giden yoldasın! ✨</div>
+                <div class="quote-author" id="quoteAuthor"></div>
+                <div style="margin-top: 20px; font-size: 1.2rem; font-weight: 600; color: #636efa;" id="goalReminder"></div>
+            </div>
+        </div>
+
+        <div class="tools-section" id="toolsSection">
+            <button class="fullscreen-btn" onclick="toggleFullscreen('timer')">⛶ Tam Ekran</button>
+            <div class="tools-title">⏱️ SAYAÇ</div>
+            
+            <div class="timer-display" id="timerDisplay">00:00:00</div>
+            
+            <div class="timer-controls">
+                <button class="control-btn start" onclick="startTimer()">▶️ Başlat</button>
+                <button class="control-btn pause" onclick="pauseTimer()">⏸️ Duraklat</button>
+                <button class="control-btn reset" onclick="resetTimer()">🔄 Sıfırla</button>
+            </div>
+
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="setPresetTime(300)">5 Dakika</button>
+                <button class="preset-btn" onclick="setPresetTime(900)">15 Dakika</button>
+                <button class="preset-btn" onclick="setPresetTime(1800)">30 Dakika</button>
+                <button class="preset-btn" onclick="setPresetTime(2700)">45 Dakika</button>
+                <button class="preset-btn" onclick="setPresetTime(3600)">1 Saat</button>
+            </div>
+
+            <div class="custom-time">
+                <h3>⚙️ Özel Süre Belirle</h3>
+                <div class="time-inputs">
+                    <div class="time-input-group">
+                        <label>Saat</label>
+                        <input type="number" id="customHours" min="0" max="23" placeholder="0">
+                    </div>
+                    <div class="time-input-group">
+                        <label>Dakika</label>
+                        <input type="number" id="customMinutes" min="0" max="59" placeholder="0">
+                    </div>
+                    <div class="time-input-group">
+                        <label>Saniye</label>
+                        <input type="number" id="customSeconds" min="0" max="59" placeholder="0">
+                    </div>
+                </div>
+                <button class="control-btn" onclick="setCustomTime()" style="margin-top: 15px;">✅ Ayarla</button>
+            </div>
+
+            <div class="alarm-sound" id="alarmSound">🔔</div>
+        </div>
+
+        <div class="tools-section" id="netSection">
+            <div class="tools-title">📝 NET TAKİBİ</div>
+            
+            <div class="net-entry-form">
+                <h3>📊 Deneme Sonuçlarını Gir</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight: 600; margin-bottom: 10px; display: block;">📅 Deneme Tarihi</label>
+                    <input type="date" id="examDate" class="net-date-input" />
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight: 600; margin-bottom: 10px; display: block;">📝 Deneme Adı (Opsiyonel)</label>
+                    <input type="text" id="examName" placeholder="Örn: TYT 1. Deneme" class="net-name-input" />
+                </div>
+
+                <div class="exam-type-tabs">
+                    <button class="exam-type-tab active" onclick="switchExamType('tyt')">📚 TYT</button>
+                    <button class="exam-type-tab" onclick="switchExamType('ayt')">📖 AYT</button>
+                </div>
+
+                <div class="exam-section active" id="tytSection">
+                    <h4 style="margin-bottom: 15px; color: #636efa; font-size: 1.1rem;">TYT Netleri</h4>
+                    <div class="subject-inputs">
+                        <div class="subject-input-group">
+                            <label>📖 Türkçe (40)</label>
+                            <input type="number" id="netTytTurkce" min="0" max="40" step="0.25" placeholder="0" />
+                        </div>
+                        <div class="subject-input-group">
+                            <label>🌍 Sosyal (20)</label>
+                            <input type="number" id="netTytSosyal" min="0" max="20" step="0.25" placeholder="0" />
+                        </div>
+                        <div class="subject-input-group">
+                            <label>🧮 Matematik (40)</label>
+                            <input type="number" id="netTytMatematik" min="0" max="40" step="0.25" placeholder="0" />
+                        </div>
+                        <div class="subject-input-group">
+                            <label>🔬 Fen (20)</label>
+                            <input type="number" id="netTytFen" min="0" max="20" step="0.25" placeholder="0" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exam-section" id="aytSection">
+                    <h4 style="margin-bottom: 15px; color: #636efa; font-size: 1.1rem;">AYT Netleri</h4>
+                    <div class="subject-inputs">
+                        <div class="subject-input-group">
+                            <label>🧮 Matematik (40)</label>
+                            <input type="number" id="netAytMatematik" min="0" max="40" step="0.25" placeholder="0" />
+                        </div>
+                        <div class="subject-input-group">
+                            <label>⚛️ Fizik (14)</label>
+                            <input type="number" id="netAytFizik" min="0" max="14" step="0.25" placeholder="0" />
+                        </div>
+                        <div class="subject-input-group">
+                            <label>🧪 Kimya (13)</label>
+                            <input type="number" id="netAytKimya" min="0" max="13" step="0.25" placeholder="0" />
+                        </div>
+                        <div class="subject-input-group">
+                            <label>🧬 Biyoloji (13)</label>
+                            <input type="number" id="netAytBiyoloji" min="0" max="13" step="0.25" placeholder="0" />
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="control-btn" onclick="saveNetData()" style="width: 100%; margin-top: 20px;">💾 Net Bilgilerini Kaydet</button>
+            </div>
+
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalExams">0</div>
+                    <div class="stat-label">Toplam Deneme</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgTotalNet">0.0</div>
+                    <div class="stat-label">Ortalama Net</div>
+                </div>
+                <div class="best-day-card">
+                    <div class="stat-value" id="bestNet">0.0</div>
+                    <div class="stat-label">En İyi Net</div>
+                </div>
+            </div>
+
+            <div class="net-list" id="netList"></div>
+        </div>
+
+        <div class="tools-section" id="statisticsSection">
+            <div class="tools-title">📊 İSTATİSTİKLER</div>
+            
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalHours">0.0</div>
+                    <div class="stat-label">Toplam Saat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgHours">0.0</div>
+                    <div class="stat-label">Günlük Ortalama</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="studyDays">0</div>
+                    <div class="stat-label">Çalışma Günü</div>
+                </div>
+                <div class="best-day-card">
+                    <div class="stat-value" id="bestDayHours">0.0</div>
+                    <div class="stat-label">En İyi Gün</div>
+                    <div style="font-size: 0.8rem; margin-top: 5px; opacity: 0.8;" id="bestDayDate"></div>
+                </div>
+            </div>
+
+            <div class="stats-header">
+                <div class="month-nav">
+                    <button onclick="changeMonth(-1)">◀</button>
+                    <div class="month-display" id="monthDisplay">Ocak 2026</div>
+                    <button onclick="changeMonth(1)">▶</button>
+                </div>
+                <button class="reset-stats-btn" onclick="resetStats()">🗑️ İstatistikleri Sıfırla</button>
+            </div>
+
+            <div class="calendar" id="calendar">
+                <div class="calendar-day-header">Pzt</div>
+                <div class="calendar-day-header">Sal</div>
+                <div class="calendar-day-header">Çar</div>
+                <div class="calendar-day-header">Per</div>
+                <div class="calendar-day-header">Cum</div>
+                <div class="calendar-day-header">Cmt</div>
+                <div class="calendar-day-header">Paz</div>
+            </div>
+
+            <div class="custom-time" style="margin-top: 30px;">
+                <h3>📝 Not</h3>
+                <p style="opacity: 0.8; line-height: 1.6;">
+                    Kronometre ile çalışma seanslarınızı takip edin. Her çalışma süresi otomatik olarak bugünün istatistiklerine eklenir. Takvimde her günün toplam çalışma süresi gösterilir.
+                </p>
+            </div>
+        </div>
+
+        <div class="tools-section" id="goalsSection">
+            <div class="tools-title">🎯 HEDEFLER</div>
+            
+            <div class="goal-input-section">
+                <h3>🎓 Üniversite Hedefin</h3>
+                <input type="text" id="universityGoal" placeholder="Örn: İTÜ Bilgisayar Mühendisliği" />
+                
+                <h3 style="margin-top: 25px;">🎯 Hedef Sıralama</h3>
+                <input type="number" id="targetScore" placeholder="Örn: 5000" />
+                
+                <h3 style="margin-top: 25px;">💭 Kişisel Notun</h3>
+                <textarea id="personalNote" placeholder="Kendine not bırak... Neden bu hedefe ulaşmak istiyorsun?"></textarea>
+                
+                <button class="control-btn" onclick="saveGoals()" style="width: 100%; margin-top: 10px;">💾 Hedefleri Kaydet</button>
+            </div>
+
+            <div class="goal-display" id="goalDisplay" style="display: none;">
+                <h4>🎯 Hedefin</h4>
+                <p id="displayGoal"></p>
+            </div>
+
+            <div class="custom-time" style="margin-top: 30px;">
+                <h3>💡 İpucu</h3>
+                <p style="opacity: 0.8; line-height: 1.6;">
+                    Hedefini belirle ve her gün hatırlat. Ana sayfada hedefin görünecek ve seni motive edecek!
+                </p>
+            </div>
+        </div>
+
+        <div class="tools-section" id="stopwatchSection">
+            <button class="fullscreen-btn" onclick="toggleFullscreen('stopwatch')">⛶ Tam Ekran</button>
+            <div class="tools-title">⏲️ KRONOMETRE</div>
+            
+            <div class="timer-display" id="stopwatchDisplay">00:00:00</div>
+            
+            <div class="timer-controls">
+                <button class="control-btn start" onclick="startStopwatch()">▶️ Başlat</button>
+                <button class="control-btn pause" onclick="pauseStopwatch()">⏸️ Duraklat</button>
+                <button class="control-btn reset" onclick="resetStopwatch()">🔄 Sıfırla</button>
+            </div>
+
+            <div class="custom-time" style="margin-top: 30px;">
+                <h3>📊 Kayıtlı Turlar</h3>
+                <div id="lapsList" style="margin-top: 15px; max-height: 300px; overflow-y: auto;">
+                    <p style="opacity: 0.7; font-style: italic;">Tur kaydı için çalışırken "Tur Kaydet" butonuna basın</p>
+                </div>
+                <button class="control-btn" onclick="recordLap()" id="lapButton" style="margin-top: 15px;" disabled>🏁 Tur Kaydet</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Hedef tarihler: 21 Haziran (Saat 10:15)
-        const date2026 = new Date("June 21, 2026 10:15:00").getTime();
-        const date2027 = new Date("June 21, 2027 10:15:00").getTime();
+        // YKS tarihleri (26 Haziran, saat 10:00 varsayımı)
+        const yks2026 = new Date('June 26, 2026 10:00:00').getTime();
+        const yks2027 = new Date('June 26, 2027 10:00:00').getTime();
 
-        function updateTimer(targetDate, elementId) {
+        function updateCountdown() {
             const now = new Date().getTime();
-            const distance = targetDate - now;
+            
+            // 2026 için hesaplama
+            updateTimer(now, yks2026, '2026');
+            
+            // 2027 için hesaplama
+            updateTimer(now, yks2027, '2027');
+        }
 
+        function updateTimer(now, targetDate, year) {
+            const distance = targetDate - now;
+            
             if (distance < 0) {
-                document.getElementById(elementId).innerHTML = "Sınav Başladı!";
+                document.getElementById(`days-${year}`).textContent = '000';
+                document.getElementById(`hours-${year}`).textContent = '00';
+                document.getElementById(`minutes-${year}`).textContent = '00';
+                document.getElementById(`seconds-${year}`).textContent = '00';
                 return;
             }
-
+            
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            const format = (num) => num < 10 ? "0" + num : num;
-
-            document.getElementById(elementId).innerHTML = 
-                `${days}g ${format(hours)}s ${format(minutes)}d ${format(seconds)}sn`;
+            
+            document.getElementById(`days-${year}`).textContent = String(days).padStart(3, '0');
+            document.getElementById(`hours-${year}`).textContent = String(hours).padStart(2, '0');
+            document.getElementById(`minutes-${year}`).textContent = String(minutes).padStart(2, '0');
+            document.getElementById(`seconds-${year}`).textContent = String(seconds).padStart(2, '0');
         }
 
-        updateTimer(date2026, "timer2026");
-        updateTimer(date2027, "timer2027");
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (body.classList.contains('light')) {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Aydınlık Mod';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Karanlık Mod';
+                localStorage.setItem('theme', 'light');
+            }
+        }
 
-        setInterval(() => {
-            updateTimer(date2026, "timer2026");
-            updateTimer(date2027, "timer2027");
-        }, 1000);
+        // Sayfa yüklendiğinde kaydedilmiş temayı yükle
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                document.getElementById('theme-icon').textContent = '☀️';
+                document.getElementById('theme-text').textContent = 'Aydınlık Mod';
+            }
+        });
+
+        // Her saniye güncelle
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Kronometre değişkenleri
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let isTimerRunning = false;
+
+        // İleri sayan kronometre değişkenleri
+        let stopwatchInterval = null;
+        let stopwatchSeconds = 0;
+        let isStopwatchRunning = false;
+        let laps = [];
+        let sessionStartTime = 0;
+
+        // İstatistik değişkenleri
+        let studyStats = JSON.parse(localStorage.getItem('studyStats')) || {};
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        // Hedef değişkenleri
+        let userGoals = JSON.parse(localStorage.getItem('userGoals')) || {};
+
+        // Net takibi değişkenleri
+        let netData = JSON.parse(localStorage.getItem('netData')) || [];
+        let currentExamType = 'tyt'; // tyt veya ayt
+
+        // Sınav tipi değiştirme
+        function switchExamType(type) {
+            currentExamType = type;
+            
+            // Tab'ları güncelle
+            const tabs = document.querySelectorAll('.exam-type-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Bölümleri göster/gizle
+            document.getElementById('tytSection').classList.remove('active');
+            document.getElementById('aytSection').classList.remove('active');
+            
+            if (type === 'tyt') {
+                document.getElementById('tytSection').classList.add('active');
+            } else {
+                document.getElementById('aytSection').classList.add('active');
+            }
+        }
+
+        // Motivasyon sözleri
+        const motivationalQuotes = [
+            { text: "Hayatta en hakiki mürşit ilimdir, fendir.", author: "Mustafa Kemal Atatürk" },
+            { text: "Başarı son değildir, başarısızlık ölümcül değildir. Önemli olan devam etme cesaretinizdir.", author: "Winston Churchill" },
+            { text: "Eğitim, dünyadaki en güçlü silahtır.", author: "Nelson Mandela" },
+            { text: "Bilgi güçtür.", author: "Francis Bacon" },
+            { text: "İmkansız, küçük ruhların sığındığı bir kelimedir.", author: "Napoléon Bonaparte" },
+            { text: "Damlaya damlaya göl olur.", author: "Atasözü" },
+            { text: "Akıllı insan her soruna bir çözüm bulur, bilge insan ise hiç sorun çıkarmaz.", author: "Albert Einstein" },
+            { text: "Hayallerinizin peşinden gidin, çünkü onlar gerçek olabilir.", author: "Walt Disney" },
+            { text: "Her şeyin başı sağlık, her şeyin sonu ilimdir.", author: "Yunus Emre" },
+            { text: "İki günü eşit olan zarardadır.", author: "Hz. Muhammed" },
+            { text: "Yavaş yavaş ilerleyen, koşarak geriye dönen kişiden daha hızlı ilerler.", author: "Lao Tzu" },
+            { text: "Başarısızlık değil, düşük hedefler suçtur.", author: "James Russell Lowell" },
+            { text: "Emek olmadan yemek olmaz.", author: "Atasözü" },
+            { text: "Geleceği tahmin etmenin en iyi yolu, onu yaratmaktır.", author: "Peter Drucker" },
+            { text: "Yapabileceğine inandığında, yolun yarısını almışsın demektir.", author: "Theodore Roosevelt" }
+        ];
+
+        function formatTime(totalSeconds) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function formatTimeWithMs(totalMs) {
+            const hours = Math.floor(totalMs / 3600000);
+            const minutes = Math.floor((totalMs % 3600000) / 60000);
+            const seconds = Math.floor((totalMs % 60000) / 1000);
+            const ms = Math.floor((totalMs % 1000) / 10);
+            
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(ms).padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById('timerDisplay').textContent = formatTime(timerSeconds);
+        }
+
+        function updateStopwatchDisplay() {
+            document.getElementById('stopwatchDisplay').textContent = formatTimeWithMs(stopwatchSeconds);
+        }
+
+        // Geri sayım fonksiyonları
+        function startTimer() {
+            if (isTimerRunning) return;
+            
+            if (timerSeconds === 0) {
+                alert('⚠️ Lütfen önce bir süre belirleyin!');
+                return;
+            }
+            
+            isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    pauseTimer();
+                    playAlarm();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isTimerRunning = false;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerSeconds = 0;
+            updateTimerDisplay();
+            document.getElementById('alarmSound').classList.remove('active');
+        }
+
+        function setPresetTime(seconds) {
+            pauseTimer();
+            timerSeconds = seconds;
+            updateTimerDisplay();
+            document.getElementById('alarmSound').classList.remove('active');
+        }
+
+        function setCustomTime() {
+            const hours = parseInt(document.getElementById('customHours').value) || 0;
+            const minutes = parseInt(document.getElementById('customMinutes').value) || 0;
+            const seconds = parseInt(document.getElementById('customSeconds').value) || 0;
+            
+            if (hours === 0 && minutes === 0 && seconds === 0) {
+                alert('⚠️ Lütfen geçerli bir süre girin!');
+                return;
+            }
+            
+            pauseTimer();
+            timerSeconds = (hours * 3600) + (minutes * 60) + seconds;
+            updateTimerDisplay();
+            document.getElementById('alarmSound').classList.remove('active');
+            
+            // Input alanlarını temizle
+            document.getElementById('customHours').value = '';
+            document.getElementById('customMinutes').value = '';
+            document.getElementById('customSeconds').value = '';
+        }
+
+        // Kronometre fonksiyonları (ileri sayan)
+        function startStopwatch() {
+            if (isStopwatchRunning) return;
+            
+            isStopwatchRunning = true;
+            sessionStartTime = Date.now() - stopwatchSeconds;
+            const startTime = Date.now() - stopwatchSeconds;
+            
+            stopwatchInterval = setInterval(() => {
+                stopwatchSeconds = Date.now() - startTime;
+                updateStopwatchDisplay();
+            }, 10);
+            
+            document.getElementById('lapButton').disabled = false;
+        }
+
+        function pauseStopwatch() {
+            if (!isStopwatchRunning) return;
+            
+            isStopwatchRunning = false;
+            if (stopwatchInterval) {
+                clearInterval(stopwatchInterval);
+                stopwatchInterval = null;
+            }
+            
+            // Çalışma süresini kaydet
+            if (stopwatchSeconds > 0) {
+                const sessionHours = stopwatchSeconds / 3600000; // milisaniyeden saate çevir
+                const today = new Date().toISOString().split('T')[0];
+                
+                if (!studyStats[today]) {
+                    studyStats[today] = 0;
+                }
+                studyStats[today] += sessionHours;
+                
+                localStorage.setItem('studyStats', JSON.stringify(studyStats));
+                updateStatistics();
+            }
+        }
+
+        function resetStopwatch() {
+            // Eğer kronometre çalışıyorsa önce duraklat ve kaydet
+            if (isStopwatchRunning) {
+                pauseStopwatch();
+            }
+            
+            stopwatchSeconds = 0;
+            laps = [];
+            updateStopwatchDisplay();
+            updateLapsList();
+            document.getElementById('lapButton').disabled = true;
+        }
+
+        function recordLap() {
+            if (!isStopwatchRunning && stopwatchSeconds === 0) return;
+            
+            laps.push(stopwatchSeconds);
+            updateLapsList();
+        }
+
+        function updateLapsList() {
+            const lapsList = document.getElementById('lapsList');
+            
+            if (laps.length === 0) {
+                lapsList.innerHTML = '<p style="opacity: 0.7; font-style: italic;">Tur kaydı için çalışırken "Tur Kaydet" butonuna basın</p>';
+                return;
+            }
+            
+            let html = '<div style="display: flex; flex-direction: column; gap: 10px;">';
+            
+            laps.forEach((lap, index) => {
+                const lapTime = formatTimeWithMs(lap);
+                const diff = index > 0 ? lap - laps[index - 1] : lap;
+                const diffTime = formatTimeWithMs(diff);
+                
+                html += `
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: bold;">Tur ${index + 1}</span>
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <span style="opacity: 0.8; font-size: 0.9rem;">+${diffTime}</span>
+                            <span style="font-size: 1.1rem; font-weight: bold; color: #636efa;">${lapTime}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            lapsList.innerHTML = html;
+        }
+
+        // İstatistik fonksiyonları
+        function updateStatistics() {
+            const totalHours = Object.values(studyStats).reduce((sum, hours) => sum + hours, 0);
+            const studyDays = Object.keys(studyStats).length;
+            const avgHours = studyDays > 0 ? totalHours / studyDays : 0;
+            
+            // En iyi gün
+            let bestDay = { date: '', hours: 0 };
+            for (const [date, hours] of Object.entries(studyStats)) {
+                if (hours > bestDay.hours) {
+                    bestDay = { date, hours };
+                }
+            }
+            
+            document.getElementById('totalHours').textContent = totalHours.toFixed(1);
+            document.getElementById('avgHours').textContent = avgHours.toFixed(1);
+            document.getElementById('studyDays').textContent = studyDays;
+            document.getElementById('bestDayHours').textContent = bestDay.hours.toFixed(1);
+            
+            if (bestDay.date) {
+                const dateParts = bestDay.date.split('-');
+                const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const dayNames = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+                document.getElementById('bestDayDate').textContent = `${dateParts[2]} ${['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'][dateParts[1] - 1]} (${dayNames[dateObj.getDay()]})`;
+            } else {
+                document.getElementById('bestDayDate').textContent = 'Henüz yok';
+            }
+            
+            renderCalendar();
+        }
+
+        // Motivasyon sözü göster
+        function showRandomQuote() {
+            const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+            document.getElementById('motivationQuote').textContent = `"${quote.text}"`;
+            document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+            
+            // Hedef hatırlatması
+            if (userGoals.university) {
+                const reminder = `🎯 Unutma, bu işin sonunda ${userGoals.university} var!`;
+                document.getElementById('goalReminder').textContent = reminder;
+            }
+        }
+
+        // Hedef kaydetme
+        function saveGoals() {
+            const university = document.getElementById('universityGoal').value;
+            const targetScore = document.getElementById('targetScore').value;
+            const personalNote = document.getElementById('personalNote').value;
+            
+            if (!university && !targetScore && !personalNote) {
+                alert('⚠️ Lütfen en az bir hedef belirleyin!');
+                return;
+            }
+            
+            userGoals = {
+                university: university,
+                targetScore: targetScore,
+                personalNote: personalNote
+            };
+            
+            localStorage.setItem('userGoals', JSON.stringify(userGoals));
+            displayGoals();
+            showRandomQuote(); // Hedef güncellendiğinde ana sayfayı güncelle
+            alert('✅ Hedefleriniz kaydedildi!');
+        }
+
+        // Hedefleri göster
+        function displayGoals() {
+            const display = document.getElementById('goalDisplay');
+            const displayText = document.getElementById('displayGoal');
+            
+            if (userGoals.university || userGoals.targetScore || userGoals.personalNote) {
+                display.style.display = 'block';
+                let text = '';
+                
+                if (userGoals.university) {
+                    text += `🎓 <strong>Hedef Üniversite:</strong> ${userGoals.university}<br>`;
+                }
+                if (userGoals.targetScore) {
+                    text += `🎯 <strong>Hedef Sıralama:</strong> ${userGoals.targetScore}<br>`;
+                }
+                if (userGoals.personalNote) {
+                    text += `<br>💭 <strong>Notun:</strong><br>${userGoals.personalNote}`;
+                }
+                
+                displayText.innerHTML = text;
+            } else {
+                display.style.display = 'none';
+            }
+        }
+
+        // Tam ekran modu
+        function toggleFullscreen(type) {
+            const section = type === 'timer' ? document.getElementById('toolsSection') : document.getElementById('stopwatchSection');
+            
+            if (!section.classList.contains('fullscreen-mode')) {
+                section.classList.add('fullscreen-mode');
+                section.querySelector('.fullscreen-btn').textContent = '✕ Kapat';
+                
+                // Tam ekran API'sini kullan
+                if (section.requestFullscreen) {
+                    section.requestFullscreen();
+                } else if (section.webkitRequestFullscreen) {
+                    section.webkitRequestFullscreen();
+                } else if (section.msRequestFullscreen) {
+                    section.msRequestFullscreen();
+                }
+            } else {
+                section.classList.remove('fullscreen-mode');
+                section.querySelector('.fullscreen-btn').textContent = '⛶ Tam Ekran';
+                
+                // Tam ekrandan çık
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Tam ekran değişikliğini dinle
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                // Tam ekrandan çıkıldı
+                const timerSection = document.getElementById('toolsSection');
+                const stopwatchSection = document.getElementById('stopwatchSection');
+                
+                if (timerSection.classList.contains('fullscreen-mode')) {
+                    timerSection.classList.remove('fullscreen-mode');
+                    timerSection.querySelector('.fullscreen-btn').textContent = '⛶ Tam Ekran';
+                }
+                
+                if (stopwatchSection.classList.contains('fullscreen-mode')) {
+                    stopwatchSection.classList.remove('fullscreen-mode');
+                    stopwatchSection.querySelector('.fullscreen-btn').textContent = '⛶ Tam Ekran';
+                }
+            }
+        }
+
+        // Net takibi fonksiyonları
+        function saveNetData() {
+            const examDate = document.getElementById('examDate').value;
+            const examName = document.getElementById('examName').value;
+            
+            if (!examDate) {
+                alert('⚠️ Lütfen deneme tarihini seçin!');
+                return;
+            }
+            
+            let netEntry = {
+                id: Date.now(),
+                date: examDate,
+                name: examName || (currentExamType === 'tyt' ? 'TYT Denemesi' : 'AYT Denemesi'),
+                type: currentExamType,
+                nets: {},
+                total: 0
+            };
+            
+            if (currentExamType === 'tyt') {
+                const turkce = parseFloat(document.getElementById('netTytTurkce').value) || 0;
+                const sosyal = parseFloat(document.getElementById('netTytSosyal').value) || 0;
+                const matematik = parseFloat(document.getElementById('netTytMatematik').value) || 0;
+                const fen = parseFloat(document.getElementById('netTytFen').value) || 0;
+                
+                netEntry.nets = { turkce, sosyal, matematik, fen };
+                netEntry.total = turkce + sosyal + matematik + fen;
+                
+                // Formu temizle
+                document.getElementById('netTytTurkce').value = '';
+                document.getElementById('netTytSosyal').value = '';
+                document.getElementById('netTytMatematik').value = '';
+                document.getElementById('netTytFen').value = '';
+            } else {
+                const matematik = parseFloat(document.getElementById('netAytMatematik').value) || 0;
+                const fizik = parseFloat(document.getElementById('netAytFizik').value) || 0;
+                const kimya = parseFloat(document.getElementById('netAytKimya').value) || 0;
+                const biyoloji = parseFloat(document.getElementById('netAytBiyoloji').value) || 0;
+                
+                netEntry.nets = { matematik, fizik, kimya, biyoloji };
+                netEntry.total = matematik + fizik + kimya + biyoloji;
+                
+                // Formu temizle
+                document.getElementById('netAytMatematik').value = '';
+                document.getElementById('netAytFizik').value = '';
+                document.getElementById('netAytKimya').value = '';
+                document.getElementById('netAytBiyoloji').value = '';
+            }
+            
+            netData.push(netEntry);
+            netData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            localStorage.setItem('netData', JSON.stringify(netData));
+            
+            // Ortak alanları temizle
+            document.getElementById('examDate').value = '';
+            document.getElementById('examName').value = '';
+            
+            displayNetData();
+            alert('✅ Net bilgileri kaydedildi!');
+        }
+
+        function displayNetData() {
+            const netList = document.getElementById('netList');
+            
+            if (netData.length === 0) {
+                netList.innerHTML = '<div class="custom-time"><p style="text-align: center; opacity: 0.7;">Henüz deneme kaydı yok. Yukarıdaki formu kullanarak net bilgilerinizi ekleyin.</p></div>';
+                document.getElementById('totalExams').textContent = '0';
+                document.getElementById('avgTotalNet').textContent = '0.0';
+                document.getElementById('bestNet').textContent = '0.0';
+                return;
+            }
+            
+            // İstatistikleri hesapla
+            const totalExams = netData.length;
+            const avgNet = netData.reduce((sum, entry) => sum + entry.total, 0) / totalExams;
+            const bestNet = Math.max(...netData.map(entry => entry.total));
+            
+            document.getElementById('totalExams').textContent = totalExams;
+            document.getElementById('avgTotalNet').textContent = avgNet.toFixed(1);
+            document.getElementById('bestNet').textContent = bestNet.toFixed(1);
+            
+            // Liste oluştur
+            let html = '';
+            netData.forEach(entry => {
+                const dateObj = new Date(entry.date);
+                const formattedDate = `${dateObj.getDate()} ${['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'][dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+                
+                const examTypeLabel = entry.type === 'tyt' ? '📚 TYT' : '📖 AYT';
+                
+                html += `
+                    <div class="net-item">
+                        <div class="net-item-header">
+                            <div>
+                                <div class="net-item-date">${examTypeLabel} - ${entry.name}</div>
+                                <div style="opacity: 0.7; font-size: 0.9rem; margin-top: 3px;">${formattedDate}</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="net-item-total">Toplam: ${entry.total.toFixed(1)}</div>
+                                <button class="delete-net-btn" onclick="deleteNetEntry(${entry.id})">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="net-item-subjects">
+                `;
+                
+                if (entry.type === 'tyt') {
+                    html += `
+                        <div class="net-subject">
+                            <div class="net-subject-name">Türkçe</div>
+                            <div class="net-subject-value">${entry.nets.turkce.toFixed(1)}/40</div>
+                        </div>
+                        <div class="net-subject">
+                            <div class="net-subject-name">Sosyal</div>
+                            <div class="net-subject-value">${entry.nets.sosyal.toFixed(1)}/20</div>
+                        </div>
+                        <div class="net-subject">
+                            <div class="net-subject-name">Matematik</div>
+                            <div class="net-subject-value">${entry.nets.matematik.toFixed(1)}/40</div>
+                        </div>
+                        <div class="net-subject">
+                            <div class="net-subject-name">Fen</div>
+                            <div class="net-subject-value">${entry.nets.fen.toFixed(1)}/20</div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="net-subject">
+                            <div class="net-subject-name">Matematik</div>
+                            <div class="net-subject-value">${entry.nets.matematik.toFixed(1)}/40</div>
+                        </div>
+                        <div class="net-subject">
+                            <div class="net-subject-name">Fizik</div>
+                            <div class="net-subject-value">${entry.nets.fizik.toFixed(1)}/14</div>
+                        </div>
+                        <div class="net-subject">
+                            <div class="net-subject-name">Kimya</div>
+                            <div class="net-subject-value">${entry.nets.kimya.toFixed(1)}/13</div>
+                        </div>
+                        <div class="net-subject">
+                            <div class="net-subject-name">Biyoloji</div>
+                            <div class="net-subject-value">${entry.nets.biyoloji.toFixed(1)}/13</div>
+                        </div>
+                    `;
+                }
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            netList.innerHTML = html;
+        }
+
+        function deleteNetEntry(id) {
+            if (confirm('Bu deneme kaydını silmek istediğinizden emin misiniz?')) {
+                netData = netData.filter(entry => entry.id !== id);
+                localStorage.setItem('netData', JSON.stringify(netData));
+                displayNetData();
+            }
+        }
+
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 
+                              'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+            
+            document.getElementById('monthDisplay').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            // Ayın ilk ve son günü
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            
+            // Ayın ilk günü hangi gün (0=Pazar, 1=Pazartesi, ...)
+            let startDay = firstDay.getDay();
+            startDay = startDay === 0 ? 6 : startDay - 1; // Pazartesi'den başlasın
+            
+            // Takvimi temizle (sadece günlük hücreleri)
+            while (calendar.children.length > 7) {
+                calendar.removeChild(calendar.lastChild);
+            }
+            
+            // Boş hücreler ekle
+            for (let i = 0; i < startDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendar.appendChild(emptyDay);
+            }
+            
+            // Bugünün tarihi
+            const today = new Date();
+            const isCurrentMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+            const todayDate = isCurrentMonth ? today.getDate() : -1;
+            
+            // Günleri ekle
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const hours = studyStats[dateStr] || 0;
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                
+                if (day === todayDate) {
+                    dayDiv.classList.add('today');
+                }
+                
+                if (hours > 0) {
+                    dayDiv.classList.add('has-data');
+                    if (hours >= 3) {
+                        dayDiv.classList.add('high-hours');
+                    }
+                }
+                
+                dayDiv.innerHTML = `
+                    <div class="day-number">${day}</div>
+                    ${hours > 0 ? `<div class="day-hours">${hours.toFixed(1)}s</div>` : ''}
+                `;
+                
+                dayDiv.onclick = () => editDayHours(dateStr, day);
+                
+                calendar.appendChild(dayDiv);
+            }
+        }
+
+        function editDayHours(dateStr, day) {
+            const currentHours = studyStats[dateStr] || 0;
+            const newHours = prompt(`${day}. gün için çalışma süresi (saat):`, currentHours.toFixed(1));
+            
+            if (newHours !== null) {
+                const hours = parseFloat(newHours);
+                if (!isNaN(hours) && hours >= 0) {
+                    if (hours === 0) {
+                        delete studyStats[dateStr];
+                    } else {
+                        studyStats[dateStr] = hours;
+                    }
+                    localStorage.setItem('studyStats', JSON.stringify(studyStats));
+                    updateStatistics();
+                }
+            }
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            
+            renderCalendar();
+        }
+
+        function resetStats() {
+            if (confirm('Tüm istatistikleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!')) {
+                studyStats = {};
+                localStorage.setItem('studyStats', JSON.stringify(studyStats));
+                updateStatistics();
+            }
+        }
+
+        // Sayfa yüklendiğinde istatistikleri güncelle
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatistics();
+        });
+
+        function playAlarm() {
+            const alarmElement = document.getElementById('alarmSound');
+            alarmElement.classList.add('active');
+            
+            // Sesli bildirim (tarayıcı izin verirse)
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('⏰ Süre Doldu!', {
+                    body: 'Geri sayımınız tamamlandı!',
+                    icon: '⏰'
+                });
+            }
+            
+            // 5 saniye sonra alarm animasyonunu durdur
+            setTimeout(() => {
+                alarmElement.classList.remove('active');
+            }, 5000);
+        }
+
+        // Bildirim izni iste (sayfa yüklendiğinde)
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // Enter tuşu ile özel süre ayarlama
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = ['customHours', 'customMinutes', 'customSeconds'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        setCustomTime();
+                    }
+                });
+            });
+        });
+
+        // Menü açma/kapama
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Bölüm değiştirme
+        function showSection(section) {
+            const countdownSection = document.getElementById('countdownSection');
+            const toolsSection = document.getElementById('toolsSection');
+            const stopwatchSection = document.getElementById('stopwatchSection');
+            const netSection = document.getElementById('netSection');
+            const statisticsSection = document.getElementById('statisticsSection');
+            const goalsSection = document.getElementById('goalsSection');
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            // Tüm bölümleri gizle
+            countdownSection.style.display = 'none';
+            toolsSection.classList.remove('active');
+            stopwatchSection.classList.remove('active');
+            netSection.classList.remove('active');
+            statisticsSection.classList.remove('active');
+            goalsSection.classList.remove('active');
+            
+            // Menü öğelerini güncelle
+            menuItems.forEach(item => item.classList.remove('active'));
+            
+            if (section === 'countdown') {
+                countdownSection.style.display = 'block';
+                menuItems[0].classList.add('active');
+            } else if (section === 'timer') {
+                toolsSection.classList.add('active');
+                menuItems[1].classList.add('active');
+            } else if (section === 'stopwatch') {
+                stopwatchSection.classList.add('active');
+                menuItems[2].classList.add('active');
+            } else if (section === 'net') {
+                netSection.classList.add('active');
+                menuItems[3].classList.add('active');
+                displayNetData(); // Net verilerini göster
+            } else if (section === 'statistics') {
+                statisticsSection.classList.add('active');
+                menuItems[4].classList.add('active');
+                updateStatistics(); // İstatistikleri güncelle
+            } else if (section === 'goals') {
+                goalsSection.classList.add('active');
+                menuItems[5].classList.add('active');
+                displayGoals(); // Hedefleri göster
+            }
+            
+            // Menüyü kapat
+            toggleMenu();
+        }
+
+        // Menü dışına tıklandığında kapat
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('dropdownMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
+                menu.classList.remove('active');
+            }
+        });
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('load', () => {
+            // Tema kontrolü - varsayılan dark
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                document.getElementById('theme-icon').textContent = '🌙';
+                document.getElementById('theme-text').textContent = 'Karanlık Mod';
+            }
+            
+            // Motivasyon sözü göster
+            showRandomQuote();
+            
+            // İstatistikleri yükle
+            updateStatistics();
+            
+            // Hedefleri yükle
+            const universityInput = document.getElementById('universityGoal');
+            const targetScoreInput = document.getElementById('targetScore');
+            const personalNoteInput = document.getElementById('personalNote');
+            
+            if (userGoals.university) universityInput.value = userGoals.university;
+            if (userGoals.targetScore) targetScoreInput.value = userGoals.targetScore;
+            if (userGoals.personalNote) personalNoteInput.value = userGoals.personalNote;
+        });
     </script>
 </body>
-
 </html>
-
